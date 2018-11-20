@@ -4,6 +4,7 @@ import (
 	"CAwithGO/src/app/domain"
 	"CAwithGO/src/app/interfaces/database"
 	"CAwithGO/src/app/usecases"
+	"errors"
 	"strconv"
 )
 
@@ -27,7 +28,7 @@ func (controller *UserController) Create(c Context) {
 	c.Bind(&u)
 	err := controller.Interactor.Add(u)
 	if err != nil {
-		c.JSON(500, NewError(err))
+		c.JSON(500, errors.New(err.Error()))
 		return
 	}
 	c.JSON(201, u)
@@ -36,7 +37,7 @@ func (controller *UserController) Create(c Context) {
 func (controller *UserController) Index(c Context) {
 	users, err := controller.Interactor.Users()
 	if err != nil {
-		c.JSON(500, NewError(err))
+		c.JSON(500, errors.New(err.Error()))
 		return
 	}
 	c.JSON(200, users)
@@ -46,7 +47,7 @@ func (controller *UserController) Show(c Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	user, err := controller.Interactor.UserById(id)
 	if err != nil {
-		c.JSON(500, NewError(err))
+		c.JSON(500, errors.New(err.Error()))
 		return
 	}
 	c.JSON(200, user)
